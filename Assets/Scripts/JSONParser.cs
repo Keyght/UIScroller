@@ -1,24 +1,56 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
+using System.Text;
 
-public class JSONParser : MonoBehaviour
+public static class JSONParser
 {
-    [SerializeField]
-    private string _fileName = "test_task_mock_data.json";
-
-    private PersonData _data;
-    private string _jsonPathTo = "Assets/JSON/";
-
-    private void Awake()
+    public static PersonData Data 
     {
-        _data = new PersonData();
+        get
+        {
+            return _data;
+        }
     }
 
-    private void Start()
-    {
-        string jsonString = File.ReadAllText(_jsonPathTo + _fileName);
-        _data = JsonUtility.FromJson<PersonData>(jsonString);
+    private static string _fileName;
+    private static PersonData _data = new PersonData();
+    private static string _jsonPathTo = Application.streamingAssetsPath + "/JSON/";
+    private static string _path 
+    { 
+        get 
+        { 
+            return (_jsonPathTo + _fileName); 
+        } 
+    }
 
-        File.WriteAllText(_fileName, JsonUtility.ToJson(_data));
+    public static void JSONLoad()
+    {
+        if (File.Exists(_path))
+        {
+            string jsonString = File.ReadAllText(_path);
+            _data = JsonUtility.FromJson<PersonData>(jsonString);
+        }
+        else
+        {
+            Debug.Log("File does not exist");
+        }
+    }
+
+    public static void SetFileName(string fileName)
+    {
+        _fileName = fileName + ".json";
+    }
+
+    public static string EncodeNonAsciiCharacters(string value)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (char c in value)
+        {
+            if (c < 128)
+            {
+                sb.Append(c);
+            }
+        }
+        return sb.ToString();
     }
 }
