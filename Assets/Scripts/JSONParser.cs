@@ -14,7 +14,7 @@ public static class JSONParser
 
     private static string _fileName;
     private static PersonData _data = new PersonData();
-    private static string _jsonPathTo = Application.streamingAssetsPath + "/JSON/";
+    private static string _jsonPathTo = Application.streamingAssetsPath;
     private static string _path 
     { 
         get 
@@ -38,7 +38,7 @@ public static class JSONParser
 
     public static void SetFileName(string fileName)
     {
-        _fileName = fileName + ".json";
+        _fileName = "/" + fileName + ".json";
     }
 
     public static string EncodeNonAsciiCharacters(string value)

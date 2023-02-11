@@ -22,6 +22,7 @@ public class ListCreator : MonoBehaviour
             var currentPrefab = Instantiate(_infoPrefab);
             currentPrefab.GetComponent<PersonObject>().SetPerson(person);
             currentPrefab.transform.SetParent(this.transform);
+            currentPrefab.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }
