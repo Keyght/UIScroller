@@ -11,8 +11,10 @@ public class ListCreator : MonoBehaviour
     public void OnButtonClick()
     {
         JSONParser.SetFileName(JSONParser.EncodeNonAsciiCharacters(_fileName.text));
-        JSONParser.JSONLoad();
-        GenerateList();
+        if (JSONParser.IsJSONLoading())
+        {
+            GenerateList();
+        }
     }
 
     private void GenerateList()

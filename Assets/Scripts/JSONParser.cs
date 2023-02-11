@@ -15,24 +15,29 @@ public static class JSONParser
     private static string _fileName;
     private static PersonData _data = new PersonData();
     private static string _jsonPathTo = Application.streamingAssetsPath;
-    private static string _path 
-    { 
-        get 
-        { 
-            return (_jsonPathTo + _fileName); 
-        } 
+    private static string _path
+    {
+        get
+        {
+            return (_jsonPathTo + _fileName);
+        }
     }
 
-    public static void JSONLoad()
+    public static bool IsJSONLoading()
     {
-        if (File.Exists(_path))
+        UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(_path);
+        www.SendWebRequest();
+        string jsonString = www.downloadHandler.text;
+        _data = JsonUtility.FromJson<PersonData>(jsonString);
+        if (_data is null)
         {
-            string jsonString = File.ReadAllText(_path);
-            _data = JsonUtility.FromJson<PersonData>(jsonString);
+            Debug.Log("Json is not Loaded");
+            return false;
         }
         else
         {
-            Debug.Log("File does not exist");
+            Debug.Log("Json is Loaded");
+            return true;
         }
     }
 
